@@ -8,7 +8,7 @@ namespace ITEA_Collections.Usings
     public class DictionaryUsing : IBaseCollectionUsing
     {
         public Dictionary<int, string> Dictionary { get; set; }
-
+        int count = 0;
         public DictionaryUsing()
         {
             Dictionary = new Dictionary<int, string>();
@@ -16,20 +16,15 @@ namespace ITEA_Collections.Usings
 
         public void Add(object ts)
         {
-            Dictionary.Add(Dictionary.Count + 1, ts.ToString());
+            Dictionary.Add(count++, ts.ToString());
         }
 
         public void AddMany(object[] ts)
         {
-            if (ts is null)
-                Console.WriteLine($"Your array is null!", ConsoleColor.Red);
-            else
+            for (int i = 0; i < ts.Length; i++)
             {
-                for (int i = 0; i < ts.Length; i++)
-                {
-                    Dictionary.Add(Dictionary.Count + 1, ts[i].ToString());
-                }
-
+                var item = ts[i];
+                Dictionary.Add(count++, item.ToString());
             }
         }
 
@@ -40,30 +35,27 @@ namespace ITEA_Collections.Usings
 
         public object[] GetAll()
         {
-            object[] all = new object[Dictionary.Count * 2];
-            int i = 0;
-            foreach (KeyValuePair<int, string> element in Dictionary)
+            object[] arrayCollections = new object[Dictionary.Count];
+            foreach (var item in Dictionary)
             {
-                all[i] = element.Key;
-                i++;
-                all[i] = element.Value;
-                i++;
-
+                for (int i = 0; i < Dictionary.Count; i++)
+                {
+                    arrayCollections[i] = item;
+                }
             }
-            return all;
+            return arrayCollections;
         }
 
         public object GetByID(int index)
         {
-
             try
             {
                 return Dictionary[index];
             }
-            catch (Exception except)
+            catch (Exception exception)
             {
-                Console.WriteLine(except.GetType().Name + except.Message);
-                Console.WriteLine($"there is no element with index: {index}", ConsoleColor.Red);
+                Extensions.ToConsole(exception.GetType().Name + exception.Message);
+                Extensions.ToConsole($"Данного индекса - {index}, нет!");
                 return null;
             }
         }
@@ -73,19 +65,19 @@ namespace ITEA_Collections.Usings
             try
             {
                 Dictionary.Remove(index);
-                Console.WriteLine($"The element index {index} is removed.");
+                Extensions.ToConsole($"Элемент {index} успешно удален");
             }
-            catch (Exception)
+            catch (ArgumentOutOfRangeException)
             {
-                Console.WriteLine("Something went wrong", ConsoleColor.Red);
+                Extensions.ToConsole("Данного элемента нет!");
             }
         }
 
         public void ShowAll()
         {
-            foreach (KeyValuePair<int, string> element in Dictionary)
+            foreach (var item in GetAll())
             {
-                Console.WriteLine($"Key:- {element.Key} and Value:- {element.Value}");
+                Extensions.ToConsole($"{Dictionary[count++]}: {item}");
             }
         }
     }

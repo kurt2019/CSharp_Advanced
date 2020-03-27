@@ -8,7 +8,7 @@ namespace ITEA_Collections.Usings
     internal class GenericListUsing : IBaseCollectionUsing
     {
         public List<string> List { get; set; }
-
+        int count = 0;
         public GenericListUsing()
         {
             List = new List<string>();
@@ -16,7 +16,7 @@ namespace ITEA_Collections.Usings
 
         public void Add(object ts)
         {
-            throw new NotImplementedException();
+            List.Add(ts.ToString());
         }
 
         public void AddMany(object[] ts)
@@ -24,34 +24,52 @@ namespace ITEA_Collections.Usings
             string[] str = new string[ts.Length];
             for (int i = 0; i < ts.Length; i++)
             {
-                str[i] = (string)ts[i];
+                str[i] = ts[i].ToString();
             }
             List.AddRange(str);
         }
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            List.Clear();
         }
 
         public object[] GetAll()
         {
-            throw new NotImplementedException();
+            return List.GetRange(0, List.Count).ToArray();
         }
 
         public object GetByID(int index)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return List[index];
+            }
+            catch (Exception exception)
+            {
+                Extensions.ToConsole(exception.GetType().Name + exception.Message);
+                Extensions.ToConsole($"Данного элемента нет! { index}");
+                return null;
+            }
         }
 
         public void RemoveByID(int index)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List.RemoveAt(index);
+                Extensions.ToConsole($"Индекс удален - №{index}", ConsoleColor.DarkYellow);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                Extensions.ToConsole($"Данного элемента нет! {index}");
+            }
         }
 
         public void ShowAll()
         {
-            throw new NotImplementedException();
+            foreach (var item in GetAll())
+                Extensions.ToConsole($"{List.IndexOf(item.ToString())}: {item}", ConsoleColor.Cyan);
         }
     }
 }

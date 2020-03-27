@@ -36,6 +36,17 @@ namespace ITEA_Collections
 
             List<string> a1 = new List<string>();
             new Dictionary<object, object>();
+
+
+            #region MyHomework
+            IBaseCollectionUsing GenericList = new GenericListUsing();
+            IBaseCollectionUsing Dictionary = new DictionaryUsing();
+
+            BaseUsingTest.Execute(ref Dictionary);
+            BaseUsingTest.Execute(ref GenericList);
+            #endregion
+
+
         }
 
         static void BaseExamples()
